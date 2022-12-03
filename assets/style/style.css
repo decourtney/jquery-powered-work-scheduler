@@ -16,7 +16,7 @@ textarea {
   white-space: pre-wrap;
 }
 
-.time-block {
+.time-block, .message {
   border-radius: 15px;
 }
 
@@ -43,6 +43,10 @@ textarea {
 .future {
   background-color: #77dd77;
   color: white;
+}
+
+.message {
+  background-color: tan;
 }
 
 .saveBtn {
