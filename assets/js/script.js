@@ -1,6 +1,6 @@
 $(function ()
 {
-  // Time slots required in 24hr clock
+  // Time slots required in 24hr clock (0-24)
   let startTime = 9; // inclusive
   let endTime = 18; // exclusive
 
@@ -71,9 +71,9 @@ $(function ()
 // Date() methods return numerical based day, months, years so conversion is necessary
 function getDateTimeGroup()
 {
-  let newDate = new Date();
+  let newDate = dayjs();
 
-  return [newDate.getHours(), getDayOfWeek(newDate.getDay()) + ", " + getMonthOfYear(newDate.getMonth()) + " " + getOrdinalDate(newDate.getDate())];
+  return [newDate.hour(), getDayOfWeek(newDate.day()) + ", " + getMonthOfYear(newDate.month()) + " " + getOrdinalDate(newDate.date())];
 }
 
 // Switch statement to convert to the day
