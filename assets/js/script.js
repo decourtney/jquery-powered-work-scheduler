@@ -1,23 +1,32 @@
 $(function ()
 {
-  let startTime = 9;
+  // Time slots required in 24hr clock
+  let startTime = 0; // inclusive
   let endTime = 18; // exclusive
+
+  // Selectors
   let mainContainerEl = $('.container-lg');
   let dateTimeEl = $('#currentDay');
 
+  // Function will return two values - Two digit 24hr time, Preformatted Day, Month Date
   let [currentHour, currentDate] = getDateTimeGroup();
 
+  // Write current date to header
   dateTimeEl.text(currentDate);
 
+  // This loop will create time slots based on startTime and endTime.  This only runs on load/refresh
   for (let i = startTime; i < endTime; i++)
   {
     let hour;
     let meridiem;
     let tense;
 
-    meridiem = i >= 12 ? "PM" : "AM";
+    // Using 24hr clock - determine meridiem
+    meridiem = (i >= 12) ? "PM" : "AM";
+    // Convert 24hr clock to 12 hr - If 0 then return 12
     hour = (i % 12) || 12;
 
+    // Get time tense for highlighting time slots.
     if (i == (currentHour))
     {
       tense = "present";
@@ -29,6 +38,7 @@ $(function ()
       tense = "future";
     }
 
+    // One long fun command - creates time slot div and supporting children for each hour
     mainContainerEl.append(
       $("<div>", { "id": "hour-" + hour, "class": "row time-block " + tense }).append(
         $("<div>", { "class": "col-2 col-md-1 hour text-center py-3" }).text(hour + meridiem),
@@ -37,9 +47,12 @@ $(function ()
           $("<i>", { "class": "fas fa-save", "aria-hidden": "true" }))));
   }
 
+  // Click listener for the save button
   mainContainerEl.on("click", ".time-block button", function (event)
   {
+    // Store input based on div id=hour-? as the key, and user input as the value.
     localStorage.setItem($(this).parent().attr("id"), $(this).parent().children("textArea").val());
+    // Then display an acceptance message for a short duration
     mainContainerEl.prepend($("<div>", { "class": "row entry-msg" }).append($("<p>", { "class": "col-12 message text-center text-primary lead py-2" }).text("Appointment saved to localstorage \u2705")));
     setTimeout(function ()
     {
@@ -47,12 +60,15 @@ $(function ()
     }, 2000);
   });
 
+  // For each entry in storage - retrieve and write saved user input to the appropriate div based on the key (hour-?)
   for (let i = 0; i < localStorage.length; i++)
   {
     $("#" + localStorage.key(i)).children("textArea").text(localStorage.getItem(localStorage.key(i)));
   }
 });
 
+// Gets and returns a formatted date and hour
+// Date() methods return numerical based day, months, years so conversion is necessary
 function getDateTimeGroup()
 {
   let newDate = new Date();
@@ -60,6 +76,7 @@ function getDateTimeGroup()
   return [newDate.getHours(), getDayOfWeek(newDate.getDay()) + ", " + getMonthOfYear(newDate.getMonth()) + " " + getOrdinalDate(newDate.getDate())];
 }
 
+// Switch statement to convert to the day
 function getDayOfWeek(day)
 {
   switch (day)
@@ -89,6 +106,7 @@ function getDayOfWeek(day)
   return day;
 }
 
+// Switch statement to convert to the month
 function getMonthOfYear(month)
 {
   switch (month)
@@ -133,9 +151,13 @@ function getMonthOfYear(month)
   return month;
 }
 
+// Adds ordinal indicators to the date
 function getOrdinalDate(ord)
 {
   let s = ['th', 'st', 'nd', 'rd'];
-  let v = ord % 100;
+  let v = ord % 100; // Only need the last two digits to determine ordinal indicator
+
+  // Found this neat code which utilizes Javascripts handling of negative number indexes
+  // https://leancrew.com/all-this/2020/06/ordinal-numerals-and-javascript/
   return ord + (s[(v - 20) % 10] || s[v] || s[0]);
 }

@@ -45,6 +45,7 @@ textarea {
   color: white;
 }
 
+/* Added to make the alert message standout a bit more */
 .message {
   background-color: tan;
 }
