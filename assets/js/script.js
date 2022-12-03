@@ -1,7 +1,7 @@
 $(function ()
 {
   // Time slots required in 24hr clock
-  let startTime = 0; // inclusive
+  let startTime = 9; // inclusive
   let endTime = 18; // exclusive
 
   // Selectors
@@ -57,7 +57,7 @@ $(function ()
     setTimeout(function ()
     {
       $('.message').remove();
-    }, 2000);
+    }, 2500);
   });
 
   // For each entry in storage - retrieve and write saved user input to the appropriate div based on the key (hour-?)
