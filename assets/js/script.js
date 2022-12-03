@@ -1,5 +1,7 @@
 $(function ()
 {
+  let startTime = 9;
+  let endTime = 18; // exclusive
   let mainContainerEl = $('.container-lg');
   let dateTimeEl = $('#currentDay');
 
@@ -7,7 +9,7 @@ $(function ()
 
   dateTimeEl.text(currentDate);
 
-  for (let i = 9; i < 18; i++)
+  for (let i = startTime; i < endTime; i++)
   {
     let hour;
     let meridiem;
@@ -39,7 +41,8 @@ $(function ()
   {
     localStorage.setItem($(this).parent().attr("id"), $(this).parent().children("textArea").val());
     mainContainerEl.prepend($("<div>", { "class": "row entry-msg" }).append($("<p>", { "class": "col-12 message text-center text-primary lead py-2" }).text("Appointment saved to localstorage \u2705")));
-    setTimeout(function(){
+    setTimeout(function ()
+    {
       $('.message').remove();
     }, 2000);
   });
@@ -54,7 +57,7 @@ function getDateTimeGroup()
 {
   let newDate = new Date();
 
-  return [newDate.getHours(), getDayOfWeek(newDate.getDay()) + ", " + getDateOfMonth(newDate.getMonth()) + " " + getOrdinalDate(newDate.getDate())];
+  return [newDate.getHours(), getDayOfWeek(newDate.getDay()) + ", " + getMonthOfYear(newDate.getMonth()) + " " + getOrdinalDate(newDate.getDate())];
 }
 
 function getDayOfWeek(day)
@@ -86,7 +89,7 @@ function getDayOfWeek(day)
   return day;
 }
 
-function getDateOfMonth(month)
+function getMonthOfYear(month)
 {
   switch (month)
   {
